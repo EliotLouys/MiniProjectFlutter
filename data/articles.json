@@ -1,0 +1,74 @@
+{
+  "articles": [
+    {
+      "id": 1,
+      "nom": "Clavier mécanique RGB",
+      "prix": 89.99,
+      "description": "Clavier gaming avec switchs rouges et rétroéclairage personnalisable.",
+      "image": "data/images/clavier_rgb.jpg"
+    },
+    {
+      "id": 2,
+      "nom": "Souris sans fil ergonomique",
+      "prix": 45.50,
+      "description": "Souris Bluetooth rechargeable avec capteur optique haute précision.",
+      "image": "data/images/souris.jpg"
+    },
+    {
+      "id": 3,
+      "nom": "Écran 27 pouces IPS",
+      "prix": 229.00,
+      "description": "Moniteur 27 pouces avec dalle IPS Full HD, 75Hz, HDMI et DisplayPort.",
+      "image": "data/images/moniteur.jpg"
+    },
+    {
+      "id": 4,
+      "nom": "Casque Bluetooth ANC",
+      "prix": 119.50,
+      "description": "Casque audio circum-aural avec réduction active du bruit et autonomie 30h.",
+      "image": "data/images/casque.jpg"
+    },
+    {
+      "id": 5,
+      "nom": "Station de charge USB-C",
+      "prix": 39.95,
+      "description": "Chargeur multi-port avec 4 USB-C Power Delivery et 2 USB-A.",
+      "image": "data/images/station.jpg"
+    },
+    {
+      "id": 6,
+      "nom": "Chaise de bureau ergonomique",
+      "prix": 189.90,
+      "description": "Chaise réglable avec support lombaire et accoudoirs 4D.",
+      "image": "data/images/chaise.jpg"
+    },
+    {
+      "id": 7,
+      "nom": "Lampe LED connectée",
+      "prix": 29.99,
+      "description": "Lampe intelligente compatible Alexa et Google Home.",
+      "image": "data/images/lampe.jpg"
+    },
+    {
+      "id": 8,
+      "nom": "Disque SSD 1 To NVMe",
+      "prix": 129.00,
+      "description": "SSD M.2 NVMe PCIe 4.0 offrant 3500 Mo/s en lecture.",
+      "image": "data/images/ssd.jpg"
+    },
+    {
+      "id": 9,
+      "nom": "Montre connectée sport",
+      "prix": 159.00,
+      "description": "Montre GPS avec suivi cardiaque et 7 jours d’autonomie.",
+      "image": "data/images/montre.jpg"
+    },
+    {
+      "id": 10,
+      "nom": "Enceinte Bluetooth portable",
+      "prix": 59.90,
+      "description": "Enceinte étanche avec son stéréo 20W et 12h d’autonomie.",
+      "image": "data/images/baffle.jpg"
+    }
+  ]
+}
