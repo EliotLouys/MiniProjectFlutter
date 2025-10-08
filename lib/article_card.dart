@@ -1,4 +1,4 @@
-import 'package:app_test/articlesdetails.dart';
+import 'articlesdetails.dart';
 import 'package:flutter/material.dart';
 import 'article.dart';
 
