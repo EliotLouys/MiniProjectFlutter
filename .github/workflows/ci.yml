@@ -21,8 +21,11 @@ jobs:
 
       # Download Flutter SDK manually
       - name: Install Flutter 3.29.3
-        run: curl -L https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.29.3-stable.tar.xz -o flutter.tar.xz tar -xf flutter.tar.xz echo "$PWD/flutter/bin" >> $GITHUB_PATH flutter doctor
-
+        run: |
+          curl -L https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.29.3-stable.tar.xz -o flutter.tar.xz
+          tar -xf flutter.tar.xz
+          echo "$PWD/flutter/bin" >> $GITHUB_PATH
+          flutter doctor
 
       # Ensure Flutter is on the path
       - name: Flutter doctor
