@@ -11,26 +11,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout repository
+      # Checkout repository
       - name: Checkout
         uses: actions/checkout@v3
 
-      # 2. Install Flutter
-      - name: Install Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.49.0 '
-          channel: 'stable'
+      # Install dependencies
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y unzip xz-utils git curl
 
-      # 3. Get dependencies
-      - name: Flutter Pub Get
+      # Download Flutter SDK manually
+      - name: Install Flutter 3.49.0
+        run: |
+          curl -L https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.49.0-stable.tar.xz -o flutter.tar.xz
+          tar xf flutter.tar.xz
+          echo "$PWD/flutter/bin" >> $GITHUB_PATH
+
+      # Ensure Flutter is on the path
+      - name: Flutter doctor
+        run: flutter doctor -v
+
+      # Get dependencies
+      - name: Install Flutter packages
         run: flutter pub get
 
-      # 4. Build release APK
+      # Build release APK
       - name: Build APK
         run: flutter build apk --release
 
-      # 5. Upload artifact to GitHub Actions (optional for debugging)
+      # Upload artifact to GitHub Actions (optional for debugging)
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
