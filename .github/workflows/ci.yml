@@ -1,0 +1,48 @@
+name: Build Flutter APK
+
+on:
+  push:
+    tags:
+      - 'v*'   # Runs when you push a tag like v1.0.0
+  workflow_dispatch:   # Also allow manual trigger from Actions tab
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout repository
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # 2. Install Flutter
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'   # pick your Flutter version
+          channel: 'stable'
+
+      # 3. Get dependencies
+      - name: Flutter Pub Get
+        run: flutter pub get
+
+      # 4. Build release APK
+      - name: Build APK
+        run: flutter build apk --release
+
+      # 5. Upload artifact to GitHub Actions (optional for debugging)
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+      # 6. Create GitHub Release and attach APK
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/app/outputs/flutter-apk/app-release.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            

@@ -1,16 +1,7 @@
-# app_test
+# Mini Project for Flutter developpement
 
-A new Flutter project.
+It mainly has for goal to help me test the flutter framework for mobile developpement. 
 
-## Getting Started
+This application is a shopping application. You can see a list of items that you can add to your shopping list and then manage your shopping list.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+For now datas are a simple json that we fetch but for future use we could get the data from an api.
