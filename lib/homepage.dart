@@ -1,7 +1,6 @@
 import 'articlespage.dart';
 import 'package:flutter/material.dart';
 
-
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
   // Home page from the basic template of flutter. I liked the little incremental
@@ -25,6 +24,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  
   int _counter = 0;
   int currentPageIndex = 0;
 
@@ -47,6 +48,11 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  @override
+  void initState()  {
+    
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done

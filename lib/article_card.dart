@@ -1,6 +1,7 @@
 import 'articlesdetails.dart';
 import 'package:flutter/material.dart';
 import 'providers/article.dart';
+import 'dart:io';
 
 class ArticleCard extends StatelessWidget {
   // Widget class for an article card in the article lists.
@@ -12,6 +13,7 @@ class ArticleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fileNameStart = article.image.substring(0,11); // path stored in Article.image
     // InkWell to make the card clickable to go to the details
     return InkWell(
       onTap: () { Navigator.push(context, ArticlesDetails.route(article));} ,
@@ -26,13 +28,21 @@ class ArticleCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-            child: Image.asset(
-              article.image,
-              height: 180,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
+            child: fileNameStart == 'data/images'
+                ? Image.asset(
+                    article.image,
+                    height: 180,
+                    width: 600,
+                    fit: BoxFit.cover,
+                  )
+                : Image.file(
+                    File(article.image),
+                    height: 180,
+                    width: 600,
+                    fit: BoxFit.cover,
+                  ),
           ),
+
           Padding(
             padding: const EdgeInsets.all(12),
             child: Column(

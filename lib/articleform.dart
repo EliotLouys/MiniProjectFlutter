@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import 'package:shop_it/providers/article.dart';
-import 'dart:math';
 
 class Articleform extends StatefulWidget {
   // Page with all the articles displayed where we can add to a cart, see details and see the cart.
   const Articleform({super.key});
 
-  static Route<void> route() {
-    return MaterialPageRoute<void>(
+  static Route<bool> route() {
+    return MaterialPageRoute<bool>(
       settings: const RouteSettings(name: '/articlesForm'),
       builder: (_) => Articleform(),
     );
@@ -62,7 +60,7 @@ class _ArticleFormstate extends State<Articleform>{
               TextField(
                 controller: _priceField,
                 decoration: const InputDecoration(labelText: "Prix de l'article"),
-                keyboardType: TextInputType.name,
+                keyboardType: TextInputType.number,
               ),
               TextField(
                 controller: _descriptionField,
@@ -112,30 +110,24 @@ class _ArticleFormstate extends State<Articleform>{
                 child: Icon(Icons.add_a_photo),
               ),
               ElevatedButton(
-                onPressed: (){
+                onPressed: () async {
                   if (_nameField.text.trim().isNotEmpty &&  _priceField.text.trim().isNotEmpty && _descriptionField.text.trim().isNotEmpty && _cgvField){
-                    ArticleProvider provider = ArticleProvider();
                     ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text("Well done"),duration:Duration(milliseconds: 1000),),
                       );
-                    
-
-
-                    provider.add(
-                      Article(id: Random().nextInt(1000000),
-                              nom: _nameField.text,
-                              prix: double.parse(_priceField.text),
-                              description: _descriptionField.text,
-                              image: "notgeneratedyet"),
-                      _image     
-                    );
                     
                     
                     _nameField.clear();
                     _priceField.clear();
                     _descriptionField.clear();
+                    setState(() {
                     _cgvField=false;
                     _image=null;
+
+                    });
+
+                  Navigator.pop(context, true);
+
                   }
                   else{
                     ScaffoldMessenger.of(context).showSnackBar(

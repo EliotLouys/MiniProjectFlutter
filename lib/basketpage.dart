@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'providers/article.dart';
-
+import 'dart:io';
 
 
 class BasketPage extends StatefulWidget{
@@ -41,6 +41,7 @@ class _BasketPageState extends State<BasketPage>{
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Basket"),
@@ -61,6 +62,8 @@ class _BasketPageState extends State<BasketPage>{
               // Build a row for each article added to cart
               itemCount: selectedArticles.length,
               itemBuilder: (context, index) {
+                final fileNameStart = selectedArticles[index].image.substring(0,11); // path stored in Article.image
+
                 final article = selectedArticles[index];
                 return Padding(
                   padding:
@@ -70,13 +73,25 @@ class _BasketPageState extends State<BasketPage>{
                       // Image
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8),
-                        child: Image.asset(
-                          article.image,
-                          width: 50,
-                          height: 50,
-                          fit: BoxFit.cover,
+                        child: SizedBox(
+                          width: 100,
+                          height: 100,
+                          child : fileNameStart == 'data/images'
+                            ? Image.asset(
+                                article.image,
+                                height: 180,
+                                width: 600,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.file(
+                                File(article.image),
+                                height: 180,
+                                width: 600,
+                                fit: BoxFit.cover,
+                              ),
+
+                          )
                         ),
-                      ),
                       const SizedBox(width: 12),
                       // Name
                       Expanded(

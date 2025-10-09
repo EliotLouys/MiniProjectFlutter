@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
 import 'package:shop_it/providers/contact.dart';
-import 'package:image_picker/image_picker.dart';
 
 
 class ContactForm extends StatefulWidget {
@@ -26,17 +24,6 @@ class _ContactFormState extends State<ContactForm>{
     final TextEditingController _mailField = TextEditingController();
     final TextEditingController _telField = TextEditingController();
 
-
-    File? _image;
-    final ImagePicker _picker = ImagePicker();
-    Future<void> _pickImage(ImageSource source) async {
-      final XFile? pickedFile = await _picker.pickImage(source: source,maxWidth: 500,imageQuality: 50);
-      if (pickedFile != null) {
-        setState(() {
-          _image = File(pickedFile.path);
-        });
-      }
-    }
     bool _cgvField = false;
 
 
@@ -72,7 +59,7 @@ class _ContactFormState extends State<ContactForm>{
             TextField(
               controller: _telField,
               decoration: const InputDecoration(labelText: "Tel"),
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.phone,
             ),
             CheckboxListTile(
               value: _cgvField,
@@ -83,37 +70,6 @@ class _ContactFormState extends State<ContactForm>{
                 });
               }
             
-            ),
-            Center(
-              child: _image == null
-                  ? Text('No image selected.')
-                  : Image.file(_image!),
-            ),
-            FloatingActionButton(
-              onPressed: () async {
-                final ImageSource? source = await showDialog<ImageSource>(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text('Select Image Source'),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, ImageSource.camera),
-                          child: Text('Camera'),
-                        ),
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, ImageSource.gallery),
-                          child: Text('Gallery'),
-                        ),
-                      ],
-                    );
-                  },
-                );
-                if (source != null) {
-                  _pickImage(source);
-                }
-              },
-              child: Icon(Icons.add_a_photo),
             ),
             ElevatedButton(
               onPressed: (){

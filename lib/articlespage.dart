@@ -1,12 +1,10 @@
 import 'package:shop_it/articleform.dart';
-
 import 'basketpage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'dart:convert';
 import 'article_card.dart';
 import 'providers/article.dart';
 import 'contactform.dart';
+
 
 class ArticlesPage extends StatefulWidget {
   final List<Article>? articleList;
@@ -25,19 +23,8 @@ class ArticlesPage extends StatefulWidget {
 }
 
 class _ArticlesPageState extends State<ArticlesPage> {
-  late Future<List<Article>> _articlesFuture;
-  late List<Article>? _selectedArticles;
-
-  Future<List<Article>> _loadArticles() async {
-    //Allows to fetch the data from the json and store them for later use.
-    final String jsonString = await rootBundle.loadString('data/articles.json');
-    final Map<String, dynamic> data = jsonDecode(jsonString);
-    
-    return (data['articles'] as List)
-        .map((item) => Article.fromJson(item))
-        .toList();
-  }
-
+    late Future<List<Article>> _articlesFuture;
+    late List<Article>? _selectedArticles;
 
     bool _isExpanded = false;
 
@@ -51,11 +38,12 @@ class _ArticlesPageState extends State<ArticlesPage> {
   @override
   void initState() {
     super.initState();
-    //Call the json load
-    _articlesFuture = _loadArticles();
+    final ArticleProvider provider = ArticleProvider();
+    _articlesFuture = provider.loadArticles();
     _selectedArticles = widget.articleList ?? [];
-    
   }
+
+
 
   @override
   Widget build(BuildContext context)  {
@@ -69,20 +57,25 @@ class _ArticlesPageState extends State<ArticlesPage> {
       FutureBuilder<List<Article>>(
         future: _articlesFuture,
         builder: (context, snapshot) {
+          
           //Nice view of waiting for data/No data found etc..
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text("Erreur: ${snapshot.error}"));
+            return Center(child: Text("Erreur : ${snapshot.error}"));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(child: Text("Aucun article trouvé."));
           }
 
           final articles = snapshot.data!;
+          // print(articles);
+
           return ListView.builder(
             padding: const EdgeInsets.all(12),
             itemCount: articles.length,
             itemBuilder: (context, index) {
+              // print(articles[index].image);
+
               //Build an article card for each article fetched from the json.
               return ArticleCard(
                 article: articles[index],
@@ -106,9 +99,15 @@ class _ArticlesPageState extends State<ArticlesPage> {
       crossAxisAlignment: CrossAxisAlignment.end,
       spacing: 10,
       children: [
+        FloatingActionButton(
+          heroTag: "fabMainExpanded",
+          onPressed: _toggleFab,
+          child: const Icon(Icons.arrow_downward),
+        ),
         Stack(
         clipBehavior: Clip.none,
         children: [
+          
           FloatingActionButton(
             onPressed:() async { 
               _toggleFab;
@@ -157,7 +156,7 @@ class _ArticlesPageState extends State<ArticlesPage> {
       ),
       FloatingActionButton.extended(
             onPressed:() {
-                  _toggleFab;
+                  
                   Navigator.push(context, ContactForm.route());
                 }, 
             tooltip: 'Add contact', 
@@ -165,9 +164,19 @@ class _ArticlesPageState extends State<ArticlesPage> {
             icon: const Icon(Icons.add),       
         ),
         FloatingActionButton.extended(
-            onPressed:() {
-              _toggleFab;
-              Navigator.push(context,Articleform.route());
+            onPressed:() async {
+              final updated = await Navigator.push<bool>(
+              context,
+              Articleform.route(),
+              );
+
+            if (updated == true) {
+              setState(() {
+                final ArticleProvider provider = ArticleProvider();
+                _articlesFuture = provider.loadArticles(); // rebuild FutureBuilder
+               });
+            }
+
             }, 
             tooltip: 'Add article', 
             label:Text("Ajouter un article à la vente") ,
