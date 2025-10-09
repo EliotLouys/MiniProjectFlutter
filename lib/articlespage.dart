@@ -1,3 +1,5 @@
+import 'package:shop_it/articleform.dart';
+
 import 'basketpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -165,9 +167,7 @@ class _ArticlesPageState extends State<ArticlesPage> {
         FloatingActionButton.extended(
             onPressed:() {
               _toggleFab;
-              ArticleProvider provider = ArticleProvider();
-              Article test = Article(id: 25, nom: "TestNom", prix: 12, description: "Very nice article", image: "tktfrr");
-              provider.add(test);
+              Navigator.push(context,Articleform.route());
             }, 
             tooltip: 'Add article', 
             label:Text("Ajouter un article à la vente") ,

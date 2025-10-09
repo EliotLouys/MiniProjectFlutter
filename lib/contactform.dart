@@ -10,7 +10,7 @@ class ContactForm extends StatefulWidget {
 
   static Route<void> route() {
     return MaterialPageRoute<void>(
-      settings: const RouteSettings(name: '/articles'),
+      settings: const RouteSettings(name: '/contactForm'),
       builder: (_) => ContactForm(),
     );
   }
@@ -30,7 +30,7 @@ class _ContactFormState extends State<ContactForm>{
     File? _image;
     final ImagePicker _picker = ImagePicker();
     Future<void> _pickImage(ImageSource source) async {
-      final XFile? pickedFile = await _picker.pickImage(source: source);
+      final XFile? pickedFile = await _picker.pickImage(source: source,maxWidth: 500,imageQuality: 50);
       if (pickedFile != null) {
         setState(() {
           _image = File(pickedFile.path);

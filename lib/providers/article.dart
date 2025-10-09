@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+import 'package:uuid/uuid.dart';
 
 class Article {
   //Data model for an article
@@ -32,6 +34,7 @@ class Article {
 
   Map<String, dynamic> toJson() {
     return {
+      'id':id,
       'nom': nom,
       'prix': prix,
       'description': description,
@@ -47,22 +50,52 @@ class ArticleProvider extends ChangeNotifier{
     //Allows to fetch the data from the json and store them for later use.
     final String jsonString = await rootBundle.loadString('data/articles.json');
     final Map<String, dynamic> data = jsonDecode(jsonString);
-    
+
     return (data['articles'] as List)
         .map((item) => Article.fromJson(item))
         .toList();
   }
 
 
-  void add(Article article) async {
+  void add(Article article, File? img) async {
     final List<Article> articlesFuture =  await _loadArticles();
-    final List<Article> updatedList = List<Article>.from(articlesFuture)..add(article);
+
+    // Ensure images folder exists
+    final dir = await getApplicationDocumentsDirectory();
+
+    final imagesDir = Directory(p.join(dir.path, 'images'));
+    if (!imagesDir.existsSync()) {
+      await imagesDir.create(recursive: true);
+    }
+
+    // Copy the image into the folder
+    final String newImageName = Uuid().v4();
+    final String newImagePath = p.join(imagesDir.path, newImageName);
+    print(newImagePath);
+    await img?.copy(newImagePath);
+
+
+    
+
+    final newArticle = Article(
+      id: article.id,
+      nom: article.nom,
+      prix: article.prix,
+      description: article.description,
+      image: newImagePath,
+    );
+
+    final List<Article> updatedList = List<Article>.from(articlesFuture)..add(newArticle);
     final jsonString = jsonEncode(updatedList);
+
     print("Json encoded"); 
     final file = File('data/test.json');
     print("File accessed");
     await file.writeAsString(jsonString);
     print("Json written");
+
+
+
   }
 
 }
