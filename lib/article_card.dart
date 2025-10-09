@@ -1,6 +1,6 @@
 import 'articlesdetails.dart';
 import 'package:flutter/material.dart';
-import 'article.dart';
+import 'providers/article.dart';
 
 class ArticleCard extends StatelessWidget {
   // Widget class for an article card in the article lists.

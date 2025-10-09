@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 import 'article_card.dart';
-import 'article.dart';
-
+import 'providers/article.dart';
+import 'contactform.dart';
 
 class ArticlesPage extends StatefulWidget {
   final List<Article>? articleList;
@@ -35,6 +35,15 @@ class _ArticlesPageState extends State<ArticlesPage> {
         .map((item) => Article.fromJson(item))
         .toList();
   }
+
+
+    bool _isExpanded = false;
+
+    void _toggleFab() {
+      setState(() {
+        _isExpanded = !_isExpanded;
+      });
+    }
 
 
   @override
@@ -90,11 +99,17 @@ class _ArticlesPageState extends State<ArticlesPage> {
       ),
     
     // Floating button allowing access to the whole shopping list.
-    floatingActionButton: Stack(
+    floatingActionButton: _isExpanded? Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      spacing: 10,
+      children: [
+        Stack(
         clipBehavior: Clip.none,
         children: [
           FloatingActionButton(
             onPressed:() async { 
+              _toggleFab;
               final updatedList = await Navigator.push(
               context,
               BasketPage.route(_selectedArticles),
@@ -137,7 +152,35 @@ class _ArticlesPageState extends State<ArticlesPage> {
             ),
           ),
         ],
-      )
+      ),
+      FloatingActionButton.extended(
+            onPressed:() {
+                  _toggleFab;
+                  Navigator.push(context, ContactForm.route());
+                }, 
+            tooltip: 'Add contact', 
+            label:Text("Ajouter un contact") ,
+            icon: const Icon(Icons.add),       
+        ),
+        FloatingActionButton.extended(
+            onPressed:() {
+              _toggleFab;
+              ArticleProvider provider = ArticleProvider();
+              Article test = Article(id: 25, nom: "TestNom", prix: 12, description: "Very nice article", image: "tktfrr");
+              provider.add(test);
+            }, 
+            tooltip: 'Add article', 
+            label:Text("Ajouter un article à la vente") ,
+            icon: const Icon(Icons.add),       
+        ),
+      ],
+    ):  FloatingActionButton(
+              heroTag: "fabMain",
+              onPressed: _toggleFab,
+              child: const Icon(Icons.menu),
+            ),
+    
+    
     );
 
   }

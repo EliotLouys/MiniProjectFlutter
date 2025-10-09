@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'article.dart';
+import 'providers/article.dart';
 
 
 
